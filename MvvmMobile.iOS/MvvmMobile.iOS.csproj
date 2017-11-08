@@ -56,6 +56,7 @@
     <Folder Include="Navigation\" />
     <Folder Include="View\" />
     <Folder Include="Common\" />
+    <Folder Include="Binding\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,6 +68,10 @@
     <Compile Include="View\TableViewControllerBase.cs" />
     <Compile Include="Common\StoryboardAttribute.cs" />
     <Compile Include="View\CollectionViewControllerBase.cs" />
+    <Compile Include="Binding\ViewModelExtensions.cs" />
+    <Compile Include="Common\TextFieldDelegate.cs" />
+    <Compile Include="Common\StringExtensions.cs" />
+    <Compile Include="Common\TextViewDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MvvmMobile.Core\MvvmMobile.Core.csproj">

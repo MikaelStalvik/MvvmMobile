@@ -1,7 +1,10 @@
 using System;
+using MvvmMobile.Core.Binding;
+using MvvmMobile.iOS.Binding;
 using MvvmMobile.iOS.Common;
 using MvvmMobile.iOS.View;
 using MvvmMobile.Sample.Core.ViewModel;
+using MvvmMobile.Sample.iOS.Common;
 using UIKit;
 
 namespace MvvmMobile.Sample.iOS.View
@@ -23,45 +26,17 @@ namespace MvvmMobile.Sample.iOS.View
         {
             base.ViewDidLoad();
 
-            //ViewModel.SetBinding(BrandTextField, "Motorcycle.Brand", true);
+            ViewModel.SetBinding(BrandTextField, "Brand", BindingMode.TwoWay);
+            ViewModel.SetBinding(ModelTextField, "Model", BindingMode.TwoWay);
+            ViewModel.SetBinding(YearTextField, "Year", BindingMode.TwoWay, new IntToStringValueConverter());
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
 
-            NavigationItem?.SetLeftBarButtonItem(new UIBarButtonItem(UIBarButtonSystemItem.Cancel, (sender, e) => 
-            {
-                ViewModel?.CancelCommand.Execute();
-            }), false);
-
-            NavigationItem?.SetRightBarButtonItem(new UIBarButtonItem(UIBarButtonSystemItem.Done, (sender, e) => 
-            {
-                ViewModel.Motorcycle.Brand = BrandTextField.Text;
-                ViewModel.Motorcycle.Model = ModelTextField.Text;
-
-                if (int.TryParse(YearTextField.Text, out int year))
-                {
-                    ViewModel.Motorcycle.Year = year;
-                }
-
-                ViewModel?.SaveMotorcycleCommand.Execute();
-            }), false);
-        }
-
-
-        // -----------------------------------------------------------------------------
-
-        // Overrides
-        protected override void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(ViewModel.Motorcycle))
-            {
-                BrandTextField.Text = ViewModel.Motorcycle.Brand;
-                ModelTextField.Text = ViewModel.Motorcycle.Model;
-                YearTextField.Text = ViewModel.Motorcycle.Year.ToString();
-                return;
-            }
+            NavigationItem?.SetLeftBarButtonItem(new UIBarButtonItem(UIBarButtonSystemItem.Cancel, (sender, e) => ViewModel?.CancelCommand.Execute()), false);
+            NavigationItem?.SetRightBarButtonItem(new UIBarButtonItem(UIBarButtonSystemItem.Done, (sender, e) => ViewModel?.SaveMotorcycleCommand.Execute()), false);
         }
     }
 }

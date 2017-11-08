@@ -38,11 +38,15 @@
     <Compile Include="Navigation\INavigation.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="ViewModel\IPayloadViewModel.cs" />
+    <Compile Include="Binding\BindingHelper.cs" />
+    <Compile Include="Binding\IValueConverter.cs" />
+    <Compile Include="Binding\BindingMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModel\" />
     <Folder Include="Navigation\" />
     <Folder Include="Common\" />
+    <Folder Include="Binding\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="XLabs.Ioc">

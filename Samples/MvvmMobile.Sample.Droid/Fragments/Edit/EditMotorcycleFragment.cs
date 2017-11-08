@@ -58,12 +58,12 @@ namespace MvvmMobile.Sample.Droid.Fragments.Edit
         {
             if (item.ItemId == Resource.Id.menuDone)
             {
-                ViewModel.Motorcycle.Brand = _brandEditText.Text;
-                ViewModel.Motorcycle.Model = _modelEditText.Text;
+                ViewModel.Brand = _brandEditText.Text;
+                ViewModel.Model = _modelEditText.Text;
 
                 if (int.TryParse(_yearEditText.Text, out int year))
                 {
-                    ViewModel.Motorcycle.Year = year;
+                    ViewModel.Year = year;
                 }
 
                 ViewModel?.SaveMotorcycleCommand.Execute();
@@ -88,11 +88,21 @@ namespace MvvmMobile.Sample.Droid.Fragments.Edit
         // Overrides
         protected override void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ViewModel.Motorcycle))
+            if (e.PropertyName == nameof(ViewModel.Brand))
             {
-                _brandEditText.Text = ViewModel.Motorcycle.Brand;
-                _modelEditText.Text = ViewModel.Motorcycle.Model;
-                _yearEditText.Text = ViewModel.Motorcycle.Year.ToString();
+                _brandEditText.Text = ViewModel.Brand;
+                return;
+            }
+
+            if (e.PropertyName == nameof(ViewModel.Model))
+            {
+                _modelEditText.Text = ViewModel.Model;
+                return;
+            }
+
+            if (e.PropertyName == nameof(ViewModel.Year))
+            {
+                _yearEditText.Text = ViewModel.Year.ToString();
                 return;
             }
         }

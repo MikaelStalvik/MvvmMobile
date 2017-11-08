@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using MvvmMobile.Core.Common;
 using MvvmMobile.Core.Navigation;
 using MvvmMobile.Core.ViewModel;
@@ -95,6 +96,23 @@ namespace MvvmMobile.Sample.Core.ViewModel
 
         private void MotorcycleChanged(Guid payloadId)
         {
+            var payloads = Resolver.Resolve<IPayloads>();
+            var payload = payloads.GetAndRemove<IMotorcyclePayload>(payloadId);
+            if (payload?.Motorcycle == null)
+            {
+                return;
+            }
+
+            var motorcycle = Motorcycles.FirstOrDefault(m => m.Id == payload.Motorcycle.Id);
+            if (motorcycle == null)
+            {
+                return;
+            }
+
+            motorcycle.Brand = payload.Motorcycle.Brand;
+            motorcycle.Model = payload.Motorcycle.Model;
+            motorcycle.Year = payload.Motorcycle.Year;
+
             NotifyPropertyChanged(nameof(Motorcycles));
         }
     }

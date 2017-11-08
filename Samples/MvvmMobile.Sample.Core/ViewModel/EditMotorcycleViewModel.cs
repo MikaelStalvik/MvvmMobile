@@ -20,7 +20,7 @@ namespace MvvmMobile.Sample.Core.ViewModel
             {
                 var mcPayload = Resolver.Resolve<IMotorcyclePayload>();
 
-                mcPayload.Motorcycle = _motorcycle;
+                mcPayload.Motorcycle = new Motorcycle { Id = Id, Brand = Brand, Model = Model, Year = Year };
 
                 NavigateBack(mcPayload);
             });
@@ -30,14 +30,38 @@ namespace MvvmMobile.Sample.Core.ViewModel
         // -----------------------------------------------------------------------------
 
         // Properties
-        private IMotorcycle _motorcycle;
-        public IMotorcycle Motorcycle
+        public Guid Id { get; private set; }
+
+        private string _brand;
+        public string Brand
         {
-            get { return _motorcycle; }
+            get { return _brand; }
             set
             {
-                _motorcycle = value;
-                NotifyPropertyChanged(nameof(Motorcycle));
+                _brand = value;
+                NotifyPropertyChanged(nameof(Brand));
+            }
+        }
+
+        private string _model;
+        public string Model
+        {
+            get { return _model; }
+            set
+            {
+                _model = value;
+                NotifyPropertyChanged(nameof(Model));
+            }
+        }
+
+        private int _year;
+        public int Year
+        {
+            get { return _year; }
+            set
+            {
+                _year = value;
+                NotifyPropertyChanged(nameof(Year));
             }
         }
 
@@ -57,11 +81,14 @@ namespace MvvmMobile.Sample.Core.ViewModel
             var payload = LoadPayload<IMotorcyclePayload>(payloadId);
             if (payload == null)
             {
-                Motorcycle = new Motorcycle { Id = Guid.NewGuid() };
+                Id = Guid.NewGuid();
                 return;
             }
 
-            Motorcycle = payload.Motorcycle;
+            Id = payload.Motorcycle.Id;
+            Brand = payload.Motorcycle.Brand;
+            Model = payload.Motorcycle.Model;
+            Year = payload.Motorcycle.Year;
         }
     }
 }
