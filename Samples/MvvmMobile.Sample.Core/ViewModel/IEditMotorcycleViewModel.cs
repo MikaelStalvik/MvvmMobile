@@ -5,7 +5,7 @@ using MvvmMobile.Sample.Core.Model;
 
 namespace MvvmMobile.Sample.Core.ViewModel
 {
-    public interface IEditMotorcycleViewModel : IPayloadViewModel
+    public interface IEditMotorcycleViewModel : IBaseViewModel
     {
         Guid Id { get; }
         string Brand { get; set; }
