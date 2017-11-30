@@ -1,37 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using MvvmMobile.Core.Common;
 using MvvmMobile.Core.Navigation;
 using MvvmMobile.iOS.Navigation;
-using TinyIoC;
-using XLabs.Ioc;
-using XLabs.Ioc.TinyIOC;
 
 namespace MvvmMobile.iOS
 {
     public static class Bootstrapper
     {
-        static TinyContainer _tinyContainer;
+        private static IContainerBuilder _container;
 
-        static Bootstrapper()
+        public static void SetupIoC(IContainerBuilder container)
         {
-            var container = TinyIoCContainer.Current;
-            _tinyContainer = new TinyContainer(container);
-            container.Register<IDependencyContainer>(_tinyContainer);
-            Resolver.SetResolver(new TinyResolver(container));
+            _container = container;
+
+            // Init Core
+            Core.Mvvm.Api.SetupIoC(container);
+
+            // Init Self
+            container.RegisterSingleton<INavigation, AppNavigation>();
         }
 
         public static void Init(Dictionary<Type, Type> viewMapper)
         {
             // Init Core
-            Core.Bootstrapper.Init();
-
-            // Init Self
-            var container = Resolver.Resolve<IDependencyContainer>();
-
-            container.RegisterSingle<INavigation, AppNavigation>();
+            Core.Mvvm.Api.Init(_container);
 
             // Init Navigation
-            Resolver.Resolve<INavigation>().Init(viewMapper);
+            Core.Mvvm.Api.Resolver.Resolve<INavigation>().Init(viewMapper);
         }
     }
 }

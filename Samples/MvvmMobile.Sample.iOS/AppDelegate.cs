@@ -20,16 +20,20 @@ namespace MvvmMobile.Sample.iOS
 
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
+            // Init IoC
+            var builder = Core.Bootstrapper.Init();
+
+            MvvmMobile.iOS.Bootstrapper.SetupIoC(builder);
+
+            builder.Build();
+
             // Init MvvmMobile
             MvvmMobile.iOS.Bootstrapper.Init(
                 new Dictionary<Type, Type>
-                {
-                    { typeof(IStartViewModel), typeof(StartViewController) },
-                    { typeof(IEditMotorcycleViewModel), typeof(EditMotorcycleViewController) }
-                });
-
-            // Init Sample Core
-            Core.Bootstrapper.Init();
+            {
+                { typeof(IStartViewModel), typeof(StartViewController) },
+                { typeof(IEditMotorcycleViewModel), typeof(EditMotorcycleViewController) }
+            });
 
             return true;
         }

@@ -4,8 +4,8 @@ using Android.App;
 using Android.OS;
 using Android.Runtime;
 using MvvmMobile.Sample.Core.ViewModel;
+using MvvmMobile.Sample.Droid.Activities.Edit;
 using MvvmMobile.Sample.Droid.Activities.Start;
-using MvvmMobile.Sample.Droid.Fragments.Edit;
 
 namespace MvvmMobile.Sample.Droid
 {
@@ -24,17 +24,21 @@ namespace MvvmMobile.Sample.Droid
         {
             base.OnCreate();
 
+            // Init IoC
+            var builder = Core.Bootstrapper.Init();
+
+            MvvmMobile.Droid.Bootstrapper.SetupIoC(builder);
+
+            builder.Build();
+
             // Init MvvmMobile
             MvvmMobile.Droid.Bootstrapper.Init(
                 new Dictionary<Type, Type>
-                {
-                    { typeof(IStartViewModel), typeof(StartActivity) },
-                    //{ typeof(IEditMotorcycleViewModel), typeof(EditMotorcycleActivity) }
-                    { typeof(IEditMotorcycleViewModel), typeof(EditMotorcycleFragment) }
-                });
-
-            // Init Sample Core
-            Core.Bootstrapper.Init();
+            {
+                { typeof(IStartViewModel), typeof(StartActivity) },
+                { typeof(IEditMotorcycleViewModel), typeof(EditMotorcycleActivity) }
+                //{ typeof(IEditMotorcycleViewModel), typeof(EditMotorcycleFragment) }
+            });
         }
 
         public override void OnTerminate()

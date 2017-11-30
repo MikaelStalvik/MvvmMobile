@@ -1,8 +1,8 @@
 ﻿using System;
+using MvvmMobile.Core;
 using MvvmMobile.Core.Common;
 using MvvmMobile.Core.ViewModel;
 using MvvmMobile.Sample.Core.Model;
-using XLabs.Ioc;
 
 namespace MvvmMobile.Sample.Core.ViewModel
 {
@@ -11,14 +11,14 @@ namespace MvvmMobile.Sample.Core.ViewModel
         // Constructors
         public EditMotorcycleViewModel()
         {
-            CancelCommand = new RelayCommand(o => 
+            CancelCommand = new RelayCommand(() => 
             {
                 NavigateBack();
             });
 
             SaveMotorcycleCommand = new RelayCommand(o =>
             {
-                var mcPayload = Resolver.Resolve<IMotorcyclePayload>();
+                var mcPayload = Mvvm.Api.Resolver.Resolve<IMotorcyclePayload>();
 
                 mcPayload.Motorcycle = new Motorcycle { Id = Id, Brand = Brand, Model = Model, Year = Year };
 

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using MvvmMobile.Core;
 using MvvmMobile.Core.Common;
 using MvvmMobile.Core.Navigation;
 using MvvmMobile.Core.ViewModel;
 using MvvmMobile.Sample.Core.Model;
-using XLabs.Ioc;
 
 namespace MvvmMobile.Sample.Core.ViewModel
 {
@@ -16,34 +16,22 @@ namespace MvvmMobile.Sample.Core.ViewModel
         {
             Motorcycles = new ObservableCollection<IMotorcycle>();
 
-            AddMotorcycleCommand = new RelayCommand(o =>
+            AddMotorcycleCommand = new RelayCommand(() =>
             {
                 navigation.NavigateTo<IEditMotorcycleViewModel>(null, MotorcycleAdded);
             });
 
-            EditMotorcycleCommand = new RelayCommand(o =>
+            EditMotorcycleCommand = new RelayCommand<IMotorcycle>(mc =>
             {
-                var mc = o as IMotorcycle;
-                if (mc == null)
-                {
-                    return;
-                }
-
-                var payload = Resolver.Resolve<IMotorcyclePayload>();
+                var payload = Mvvm.Api.Resolver.Resolve<IMotorcyclePayload>();
 
                 payload.Motorcycle = mc;
 
                 navigation.NavigateTo<IEditMotorcycleViewModel>(payload, MotorcycleChanged);
             });
 
-            DeleteMotorcycleCommand = new RelayCommand(o =>
+            DeleteMotorcycleCommand = new RelayCommand<IMotorcycle>(mc =>
             {
-                var mc = o as IMotorcycle;
-                if (mc == null)
-                {
-                    return;
-                }
-
                 Motorcycles.Remove(mc);
 
                 NotifyPropertyChanged(nameof(Motorcycles));
@@ -72,8 +60,8 @@ namespace MvvmMobile.Sample.Core.ViewModel
 
         // Commands
         public RelayCommand AddMotorcycleCommand { get; }
-        public RelayCommand EditMotorcycleCommand { get; }
-        public RelayCommand DeleteMotorcycleCommand { get; }
+        public RelayCommand<IMotorcycle> EditMotorcycleCommand { get; }
+        public RelayCommand<IMotorcycle> DeleteMotorcycleCommand { get; }
 
 
         // -----------------------------------------------------------------------------
@@ -82,7 +70,7 @@ namespace MvvmMobile.Sample.Core.ViewModel
         private void MotorcycleAdded(Guid payloadId)
         {
             // Get Payload
-            var payloads = Resolver.Resolve<IPayloads>();
+            var payloads = Mvvm.Api.Resolver.Resolve<IPayloads>();
             var payload = payloads.GetAndRemove<IMotorcyclePayload>(payloadId);
             if (payload?.Motorcycle == null)
             {
