@@ -84,7 +84,7 @@ namespace MvvmMobile.Sample.Core.ViewModel
 
         private void MotorcycleChanged(Guid payloadId)
         {
-            var payloads = Resolver.Resolve<IPayloads>();
+            var payloads = Mvvm.Api.Resolver.Resolve<IPayloads>();
             var payload = payloads.GetAndRemove<IMotorcyclePayload>(payloadId);
             if (payload?.Motorcycle == null)
             {

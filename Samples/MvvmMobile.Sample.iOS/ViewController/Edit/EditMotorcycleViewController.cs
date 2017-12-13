@@ -3,8 +3,8 @@ using MvvmMobile.Core.Binding;
 using MvvmMobile.iOS.Binding;
 using MvvmMobile.iOS.Common;
 using MvvmMobile.iOS.View;
+using MvvmMobile.Sample.Core.ValueConverter;
 using MvvmMobile.Sample.Core.ViewModel;
-using MvvmMobile.Sample.iOS.Common;
 using UIKit;
 
 namespace MvvmMobile.Sample.iOS.View

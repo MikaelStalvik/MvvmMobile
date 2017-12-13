@@ -1,7 +1,6 @@
-﻿using System;
-using MvvmMobile.Core.Binding;
+﻿using MvvmMobile.Core.Binding;
 
-namespace MvvmMobile.Sample.iOS.Common
+namespace MvvmMobile.Sample.Core.ValueConverter
 {
     public class IntToStringValueConverter : IValueConverter
     {
