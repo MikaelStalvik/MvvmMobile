@@ -12,5 +12,6 @@ namespace MvvmMobile.Sample.Core.ViewModel
         RelayCommand AddMotorcycleCommand { get; }
         RelayCommand<IMotorcycle> EditMotorcycleCommand { get; }
         RelayCommand<IMotorcycle> DeleteMotorcycleCommand { get; }
+        RelayCommand OpenFormsTestPage { get; }
     }
 }

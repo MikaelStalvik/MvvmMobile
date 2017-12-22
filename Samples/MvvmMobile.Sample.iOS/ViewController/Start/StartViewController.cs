@@ -31,8 +31,6 @@ namespace MvvmMobile.Sample.iOS.View
 
             _source = new StartTableViewSource(MotorcycleSelected, DeleteMotorcycle);
             TableView.Source = _source;
-
-            //ViewModel.SetBinding(TableView, () => _source?.LoadData(ViewModel.Motorcycles));
         }
 
         public override void ViewWillAppear(bool animated)
@@ -62,17 +60,18 @@ namespace MvvmMobile.Sample.iOS.View
         // Private Methods
         private void MotorcycleSelected(IMotorcycle motorcycle)
         {
-            ViewModel?.EditMotorcycleCommand.Execute(motorcycle);
+            ViewModel?.EditMotorcycleCommand?.Execute(motorcycle);
         }
 
         partial void AddMotorcycle(Foundation.NSObject sender)
         {
-            ViewModel?.AddMotorcycleCommand.Execute();
+            //ViewModel?.AddMotorcycleCommand?.Execute();
+            ViewModel?.OpenFormsTestPage?.Execute();
         }
 
         private void DeleteMotorcycle(IMotorcycle motorcycle)
         {
-            ViewModel?.DeleteMotorcycleCommand.Execute(motorcycle);
+            ViewModel?.DeleteMotorcycleCommand?.Execute(motorcycle);
         }
     }
 }

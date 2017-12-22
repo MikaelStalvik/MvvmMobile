@@ -124,15 +124,6 @@ namespace MvvmMobile.iOS.View
 
         // -----------------------------------------------------------------------------
 
-        // Public Methods
-        public UIViewController AsViewController()
-        {
-            return this;
-        }
-
-
-        // -----------------------------------------------------------------------------
-
         // Payload and Callback Handling
         public void SetPayload(IPayload payload)
         {

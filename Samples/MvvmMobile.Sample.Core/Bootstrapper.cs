@@ -15,6 +15,7 @@ namespace MvvmMobile.Sample.Core
 
             builder.Register<IStartViewModel, StartViewModel>();
             builder.Register<IEditMotorcycleViewModel, EditMotorcycleViewModel>();
+            builder.Register<ITestViewModel, TestViewModel>();
 
             return builder;
         }

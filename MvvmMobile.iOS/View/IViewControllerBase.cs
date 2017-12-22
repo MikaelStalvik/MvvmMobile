@@ -10,6 +10,5 @@ namespace MvvmMobile.iOS.View
 
         void SetPayload(IPayload payload);
         void SetCallback(Action<Guid> callbackAction);
-        UIViewController AsViewController();
     }
 }

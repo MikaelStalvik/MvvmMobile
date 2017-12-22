@@ -4,6 +4,7 @@ using System.Linq;
 using MvvmMobile.Core.Navigation;
 using MvvmMobile.Core.ViewModel;
 using MvvmMobile.iOS.Common;
+using MvvmMobile.iOS.Interface;
 using MvvmMobile.iOS.View;
 using UIKit;
 
@@ -62,7 +63,17 @@ namespace MvvmMobile.iOS.Navigation
             if (attributes == null)
             {
                 // Instantiate the VC
-                vc = Activator.CreateInstance(viewControllerType) as UIViewController;
+                var target = Activator.CreateInstance(viewControllerType);
+                if (target is UIViewController)
+                {
+                    vc = target as UIViewController;
+                }
+                else if (target is IViewControllerFactory)
+                {
+                    vc = ((IViewControllerFactory)target).CreateViewController();
+                }
+
+                //vc = Activator.CreateInstance(viewControllerType) as UIViewController;
             }
             else
             {
@@ -98,8 +109,8 @@ namespace MvvmMobile.iOS.Navigation
                 // Handle modal
                 if (frameworkVc.AsModal)
                 {
-                    frameworkVc.AsViewController().ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                    NavigationController?.PresentViewController(new UINavigationController(frameworkVc.AsViewController()), true, null);
+                    vc.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    NavigationController?.PresentViewController(new UINavigationController(vc), true, null);
                     return;
                 }
             }

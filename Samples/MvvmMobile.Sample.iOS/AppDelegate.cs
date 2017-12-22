@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Foundation;
 using MvvmMobile.Sample.Core.ViewModel;
 using MvvmMobile.Sample.iOS.View;
+using MvvmMobile.Sample.iOS.ViewController;
 using UIKit;
+using Xamarin.Forms;
 
 namespace MvvmMobile.Sample.iOS
 {
@@ -20,6 +22,9 @@ namespace MvvmMobile.Sample.iOS
 
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
+            // Init Forms
+            Xamarin.Forms.Forms.Init();
+
             // Init IoC
             var builder = Core.Bootstrapper.Init();
 
@@ -27,12 +32,14 @@ namespace MvvmMobile.Sample.iOS
 
             builder.Build();
 
+            var tmp = new Core.Page.TestPage().CreateViewController();
+
             // Init MvvmMobile
-            MvvmMobile.iOS.Bootstrapper.Init(
-                new Dictionary<Type, Type>
+            MvvmMobile.iOS.Bootstrapper.Init(new Dictionary<Type, Type>
             {
                 { typeof(IStartViewModel), typeof(StartViewController) },
-                { typeof(IEditMotorcycleViewModel), typeof(EditMotorcycleViewController) }
+                { typeof(IEditMotorcycleViewModel), typeof(EditMotorcycleViewController) },
+                { typeof(ITestViewModel), typeof(FormsViewController<Core.Page.TestPage>) }
             });
 
             return true;
