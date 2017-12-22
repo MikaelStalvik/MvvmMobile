@@ -17,7 +17,8 @@ namespace MvvmMobile.Sample.Core.ViewModel
 
             AddMotorcycleCommand = new RelayCommand(() =>
             {
-                navigation.NavigateTo<IEditMotorcycleViewModel>(null, MotorcycleAdded);
+                //navigation.NavigateTo<IEditMotorcycleViewModel>(null, MotorcycleAdded);
+                navigation.NavigateTo<ITestViewModel>(null, MotorcycleAdded);
             });
 
             EditMotorcycleCommand = new RelayCommand<IMotorcycle>(mc =>
@@ -26,7 +27,8 @@ namespace MvvmMobile.Sample.Core.ViewModel
 
                 payload.Motorcycle = mc;
 
-                navigation.NavigateTo<IEditMotorcycleViewModel>(payload, MotorcycleChanged);
+                //navigation.NavigateTo<IEditMotorcycleViewModel>(payload, MotorcycleChanged);
+                navigation.NavigateTo<ITestViewModel>(payload, MotorcycleChanged);
             });
 
             DeleteMotorcycleCommand = new RelayCommand<IMotorcycle>(mc =>
@@ -34,11 +36,6 @@ namespace MvvmMobile.Sample.Core.ViewModel
                 Motorcycles.Remove(mc);
 
                 NotifyPropertyChanged(nameof(Motorcycles));
-            });
-
-            OpenFormsTestPage = new RelayCommand(() => 
-            {
-                navigation.NavigateTo<ITestViewModel>(); 
             });
 
             Motorcycles.Add(new Motorcycle { Id = Guid.NewGuid(), Brand = "Yamaha", Model = "R1", Year = 2007 });
@@ -66,7 +63,6 @@ namespace MvvmMobile.Sample.Core.ViewModel
         public RelayCommand AddMotorcycleCommand { get; }
         public RelayCommand<IMotorcycle> EditMotorcycleCommand { get; }
         public RelayCommand<IMotorcycle> DeleteMotorcycleCommand { get; }
-        public RelayCommand OpenFormsTestPage { get; }
 
 
         // -----------------------------------------------------------------------------

@@ -7,7 +7,7 @@ using UIKit;
 
 namespace MvvmMobile.iOS.View
 {
-    public class TableViewControllerBase<T> : UITableViewController, IViewControllerBase where T : class, IBaseViewModel
+    public class TableViewControllerBase<T> : UITableViewController, IPayloadHandler, IModalAware where T : class, IBaseViewModel
     {
         // Private Members
         private bool _isFramesReady;

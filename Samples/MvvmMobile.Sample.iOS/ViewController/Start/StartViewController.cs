@@ -65,8 +65,7 @@ namespace MvvmMobile.Sample.iOS.View
 
         partial void AddMotorcycle(Foundation.NSObject sender)
         {
-            //ViewModel?.AddMotorcycleCommand?.Execute();
-            ViewModel?.OpenFormsTestPage?.Execute();
+            ViewModel?.AddMotorcycleCommand?.Execute();
         }
 
         private void DeleteMotorcycle(IMotorcycle motorcycle)

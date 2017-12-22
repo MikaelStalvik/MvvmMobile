@@ -5,7 +5,7 @@ using MvvmMobile.Core.ViewModel;
 
 namespace MvvmMobile.Droid.View
 {
-    public class FragmentBase : Fragment
+    public class FragmentBase : Fragment, IPayloadHandler
     {
         // Properties
         public string Title { get; protected set; }

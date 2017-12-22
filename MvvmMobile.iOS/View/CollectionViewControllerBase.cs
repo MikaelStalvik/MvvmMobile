@@ -7,7 +7,7 @@ using UIKit;
 
 namespace MvvmMobile.iOS.View
 {
-    public class CollectionViewControllerBase<T> : UICollectionViewController, IViewControllerBase where T : class, IBaseViewModel
+    public class CollectionViewControllerBase<T> : UICollectionViewController, IPayloadHandler, IModalAware where T : class, IBaseViewModel
     {
         // Private Members
         private bool _isFramesReady;

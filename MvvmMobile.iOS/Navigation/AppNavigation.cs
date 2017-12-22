@@ -58,6 +58,7 @@ namespace MvvmMobile.iOS.Navigation
             }
 
             // Create the vc
+            var openModal = false;
             UIViewController vc = null;
             var attributes = viewControllerType.CustomAttributes.FirstOrDefault(a => a.AttributeType == typeof(StoryboardAttribute));
             if (attributes == null)
@@ -71,9 +72,11 @@ namespace MvvmMobile.iOS.Navigation
                 else if (target is IViewControllerFactory)
                 {
                     vc = ((IViewControllerFactory)target).CreateViewController();
-                }
 
-                //vc = Activator.CreateInstance(viewControllerType) as UIViewController;
+                    AttachPayloadAndCallback(target as IPayloadHandler, parameter, callback);
+
+                    openModal = ShouldOpenModal(target as IModalAware);
+                }
             }
             else
             {
@@ -91,28 +94,14 @@ namespace MvvmMobile.iOS.Navigation
                 return;
             }
 
-            if (vc is IViewControllerBase frameworkVc)
+            AttachPayloadAndCallback(vc as IPayloadHandler, parameter, callback);
+
+            if (ShouldOpenModal(vc as IModalAware) || openModal)
             {
-                // Handle payload parameter
-                if (parameter != null)
-                {
-                    // Set payload id
-                    frameworkVc.SetPayload(parameter);
-                }
+                vc.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
 
-                // Handle callback
-                if (callback != null)
-                {
-                    frameworkVc.SetCallback(callback);
-                }
-
-                // Handle modal
-                if (frameworkVc.AsModal)
-                {
-                    vc.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                    NavigationController?.PresentViewController(new UINavigationController(vc), true, null);
-                    return;
-                }
+                NavigationController?.PresentViewController(new UINavigationController(vc), true, null);
+                return;
             }
 
             // Push the vc
@@ -128,26 +117,22 @@ namespace MvvmMobile.iOS.Navigation
                 return;
             }
 
-            // Get the current VC
-            var currentVC = NavigationController.VisibleViewController as IViewControllerBase;
-            if (currentVC == null)
+            // Dismiss the VC
+            if (NavigationController.VisibleViewController is IModalAware modalAwareVc)
             {
-                throw new Exception("The current VC does not implement IViewControllerBase!");
+                // Handle modal
+                if (modalAwareVc.AsModal)
+                {
+                    NavigationController?.DismissViewController(true, () => 
+                    {
+                        done?.Invoke();
+                    });
+                    return;
+                }
             }
 
-            // Dismiss the VC
-            if (currentVC.AsModal)
-            {
-                NavigationController?.DismissViewController(true, () => 
-                {
-                    done?.Invoke();
-                });
-            }
-            else
-            {
-                NavigationController?.PopViewController(true);
-                done?.Invoke();
-            }
+            NavigationController?.PopViewController(true);
+            done?.Invoke();
         }
 
         public void NavigateBack(Action<Guid> callbackAction, Guid payloadId, Action done = null)
@@ -158,6 +143,41 @@ namespace MvvmMobile.iOS.Navigation
 
                 done?.Invoke();
             });
+        }
+
+
+        // -----------------------------------------------------------------------------
+
+        // Private Methods
+        private void AttachPayloadAndCallback(IPayloadHandler payloadHandler, IPayload parameter, Action<Guid> callback)
+        {
+            if (payloadHandler == null)
+            {
+                return;
+            }
+
+            // Handle payload parameter
+            if (parameter != null)
+            {
+                // Set payload id
+                payloadHandler.SetPayload(parameter);
+            }
+
+            // Handle callback
+            if (callback != null)
+            {
+                payloadHandler.SetCallback(callback);
+            }
+        }
+
+        private bool ShouldOpenModal(IModalAware modalAware)
+        {
+            if (modalAware == null)
+            {
+                return false;
+            }
+
+            return modalAware.AsModal;
         }
     }
 }

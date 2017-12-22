@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Windows.Input;
 
 namespace MvvmMobile.Core.Common
 {
-    public sealed class RelayCommand
+    public sealed class RelayCommand : ICommand
     {
         // Private Members
         private readonly Action<object> _execute;
@@ -24,6 +25,7 @@ namespace MvvmMobile.Core.Common
             _canExecute = canExecute;
         }
 
+        public event EventHandler CanExecuteChanged;
 
         // -----------------------------------------------------------------------------
 
@@ -35,6 +37,11 @@ namespace MvvmMobile.Core.Common
 
         public void Execute(object parameter)
         {
+            if (parameter == null)
+            {
+                Execute();
+            }
+
             if (CanExecute(parameter))
             {
                 _execute?.Invoke(parameter);

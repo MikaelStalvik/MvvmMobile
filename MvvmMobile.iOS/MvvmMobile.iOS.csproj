@@ -58,7 +58,6 @@
     <Compile Include="Navigation\AppNavigation.cs" />
     <Compile Include="View\TabBarControllerBase.cs" />
     <Compile Include="View\ViewControllerBase.cs" />
-    <Compile Include="View\IViewControllerBase.cs" />
     <Compile Include="View\TableViewControllerBase.cs" />
     <Compile Include="Common\StoryboardAttribute.cs" />
     <Compile Include="View\CollectionViewControllerBase.cs" />

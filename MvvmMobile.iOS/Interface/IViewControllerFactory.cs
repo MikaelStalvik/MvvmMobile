@@ -1,8 +1,9 @@
-﻿using UIKit;
+﻿using MvvmMobile.Core.ViewModel;
+using UIKit;
 
 namespace MvvmMobile.iOS.Interface
 {
-    public interface IViewControllerFactory
+    public interface IViewControllerFactory : IPayloadHandler
     {
         UIViewController CreateViewController();
     }
