@@ -134,6 +134,7 @@
     </Compile>
     <Compile Include="Binding\ViewModelExtensions.cs" />
     <Compile Include="ViewController\FormsViewController.cs" />
+    <Compile Include="ViewController\FormsPageRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MvvmMobile.iOS\MvvmMobile.iOS.csproj">

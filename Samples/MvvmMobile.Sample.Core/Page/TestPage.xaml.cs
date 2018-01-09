@@ -11,6 +11,7 @@ namespace MvvmMobile.Sample.Core.Page
     {
         public TestPage()
         {
+            Title = "FORMS";
             InitializeComponent();
             AsModal = true;
         }
@@ -23,7 +24,51 @@ namespace MvvmMobile.Sample.Core.Page
         }
     }
 
-    public class PageBase<T> : ContentPage, IPayloadHandler, IModalAware where T : class, IBaseViewModel
+    public class PagePase : ContentPage, IPayloadHandler, IModalAware
+    {
+        // Properties
+        protected Guid PayloadId { get; set; }
+        protected Action<Guid> CallbackAction { get; set; }
+        public bool AsModal { get; protected set; }
+
+
+        // -----------------------------------------------------------------------------
+
+        // Virtual Methods
+        protected virtual void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e) { }
+        protected virtual void ViewFramesReady() { }
+
+
+        // -----------------------------------------------------------------------------
+
+        // Payload and Callback Handling
+        public void SetPayload(IPayload payload)
+        {
+            if (payload == null)
+            {
+                return;
+            }
+
+            // Set payload id
+            PayloadId = Guid.NewGuid();
+
+            // Add payload
+            var payloads =  MvvmMobile.Core.Mvvm.Api.Resolver.Resolve<IPayloads>();
+            payloads.Add(PayloadId, payload);
+        }
+
+        public void SetCallback(Action<Guid> callbackAction)
+        {
+            if (callbackAction == null)
+            {
+                return;
+            }
+
+            CallbackAction = callbackAction;
+        }
+    }
+
+    public class PageBase<T> : PagePase where T : class, IBaseViewModel
     {
         // Lifecycle
         protected override void OnAppearing()
@@ -63,10 +108,6 @@ namespace MvvmMobile.Sample.Core.Page
         // -----------------------------------------------------------------------------
 
         // Properties
-        protected Guid PayloadId { get; set; }
-        protected Action<Guid> CallbackAction { get; set; }
-        public bool AsModal { get; protected set; }
-
         private T _viewModel;
         protected T ViewModel
         {
@@ -87,42 +128,6 @@ namespace MvvmMobile.Sample.Core.Page
                 _viewModel.OnLoaded();
                 _viewModel.CallbackAction = CallbackAction;
             }
-        }
-
-
-        // -----------------------------------------------------------------------------
-
-        // Virtual Methods
-        protected virtual void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e) { }
-        protected virtual void ViewFramesReady() { }
-
-
-        // -----------------------------------------------------------------------------
-
-        // Payload and Callback Handling
-        public void SetPayload(IPayload payload)
-        {
-            if (payload == null)
-            {
-                return;
-            }
-
-            // Set payload id
-            PayloadId = Guid.NewGuid();
-
-            // Add payload
-            var payloads =  MvvmMobile.Core.Mvvm.Api.Resolver.Resolve<IPayloads>();
-            payloads.Add(PayloadId, payload);
-        }
-
-        public void SetCallback(Action<Guid> callbackAction)
-        {
-            if (callbackAction == null)
-            {
-                return;
-            }
-
-            CallbackAction = callbackAction;
         }
     }
 }

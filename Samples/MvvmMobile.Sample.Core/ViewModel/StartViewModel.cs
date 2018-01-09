@@ -17,8 +17,8 @@ namespace MvvmMobile.Sample.Core.ViewModel
 
             AddMotorcycleCommand = new RelayCommand(() =>
             {
-                //navigation.NavigateTo<IEditMotorcycleViewModel>(null, MotorcycleAdded);
-                navigation.NavigateTo<ITestViewModel>(null, MotorcycleAdded);
+                navigation.NavigateTo<IEditMotorcycleViewModel>(null, MotorcycleAdded);
+                //navigation.NavigateTo<ITestViewModel>(null, MotorcycleAdded);
             });
 
             EditMotorcycleCommand = new RelayCommand<IMotorcycle>(mc =>
